@@ -6,8 +6,8 @@ package org.perfectsmiles.system.model;
 
 /**
  *
- * @author informatica
+ * @author crrv0
  */
-public class random3 {
+public class RolePermission {
     
 }

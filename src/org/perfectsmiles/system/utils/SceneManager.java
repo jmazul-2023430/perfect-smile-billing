@@ -19,12 +19,7 @@ public class SceneManager {
         return instanciaSceneManager;
     }
 
-    /**
-     * Este metodo permite recibir un parametro de tipo Scene y es la escena que
-     * se mostrara en el Stage
-     *
-     * @param scene Escena a mostrar en el Stage
-     */
+
     public void changeScene(Scene scene) {
         try {
             stagePrincipal.setScene(scene);
