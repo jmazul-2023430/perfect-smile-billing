@@ -1,0 +1,84 @@
+/*
+    Estilo "glass" compartido entre LoginView y RegisterView.
+    JavaFX no tiene backdrop-blur real, asi que el efecto de vidrio se
+    logra con: fondo semitransparente (rgba) + borde claro semitransparente
+    + sombra suave (dropshadow). El contraste con la imagen de fondo detras
+    es lo que vende el efecto.
+*/
+
+.glass-card {
+    -fx-background-color: rgba(255, 255, 255, 0.72);
+    -fx-background-radius: 18;
+    -fx-border-color: rgba(255, 255, 255, 0.55);
+    -fx-border-width: 1.2;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 30, 0.35), 24, 0.25, 0, 6);
+    -fx-padding: 20 18 20 18;
+}
+
+.title-text {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: #123a4d;
+}
+
+.subtitle-text {
+    -fx-font-size: 12px;
+    -fx-fill: #4a6270;
+}
+
+.field-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #123a4d;
+}
+
+.text-input {
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(18, 58, 77, 0.25);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 6 10 6 10;
+    -fx-font-size: 12px;
+}
+
+.text-input:focused {
+    -fx-border-color: #16b8c4;
+    -fx-border-width: 1.5;
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+}
+
+.primary-button {
+    -fx-background-color: #16b8c4;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-radius: 20;
+    -fx-padding: 8 26 8 26;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #129aa4;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #0e7d85;
+}
+
+.link-secondary {
+    -fx-text-fill: #1479c9;
+    -fx-font-size: 11px;
+    -fx-underline: false;
+}
+
+.link-secondary:hover {
+    -fx-text-fill: #0d5a94;
+    -fx-underline: true;
+}
+
+.error-label {
+    -fx-text-fill: #d1373a;
+    -fx-font-size: 11px;
+}

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!--
+    Vista: Gestion de Pacientes
+    Misma estructura que TarifarioView.fxml (header + sidebar + contenido)
+    para mantener consistencia visual al cambiar de pestaña.
+-->
+
+<BorderPane fx:id="rootPane" prefHeight="650.0" prefWidth="1000.0" stylesheets="@../resources/styles/PatientsStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PacientesViewController">
+
+    <!-- ================= TOP ================= -->
+    <top>
+        <HBox fx:id="topBar" alignment="CENTER_LEFT" spacing="10.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="12.0" left="20.0" right="20.0" top="12.0" />
+            </padding>
+            <Label fx:id="lblTituloApp" text="Sonrisas Perfectas - Panel de Administracion">
+                <font>
+                    <javafx.scene.text.Font name="System Bold" size="18.0" />
+                </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="lblUsuarioActual" text="Usuario: -" />
+            <Label fx:id="lblRolActual" text="Rol: -" />
+         <ImageView fitHeight="150.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../resources/image/logo1.png" />
+            </image>
+         </ImageView>
+        </HBox>
+    </top>
+
+    <!-- ================= LEFT: menu lateral ================= -->
+    <left>
+        <VBox fx:id="sidebarMenu" prefWidth="190.0" spacing="4.0" BorderPane.alignment="TOP_CENTER">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+            </padding>
+
+            <Button fx:id="btnTarifario" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Tarifario" />
+            <Button fx:id="btnPresupuestos" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Presupuestos" />
+            <!-- Pestaña activa en esta vista: resaltarla en el controller, no aqui -->
+            <Button fx:id="btnPacientes" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Pacientes" />
+            <!-- Visible/managed solo si tienePermiso(GESTIONAR_USUARIOS); ocultarlo en initialize() del controller -->
+            <Button fx:id="btnUsuarios" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Usuarios" />
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <Separator />
+            <Button fx:id="btnCerrarSesion" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cerrar Sesion" />
+        </VBox>
+    </left>
+
+    <!-- ================= CENTER: contenido del modulo ================= -->
+    <center>
+        <VBox fx:id="contentArea" spacing="12.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+
+            <Label fx:id="lblTituloModulo" text="Gestion de Pacientes">
+                <font>
+                    <javafx.scene.text.Font name="System Bold" size="20.0" />
+                </font>
+            </Label>
+            <Label fx:id="lblSubtituloModulo" text="Administre los expedientes y datos de contacto de sus pacientes." />
+
+            <!-- Requiere permiso VER_PACIENTES; el buscador filtra sobre la tabla -->
+            <HBox fx:id="toolBar" alignment="CENTER_LEFT" spacing="10.0">
+                <TextField fx:id="txtBuscarPaciente" promptText="Buscar paciente" HBox.hgrow="ALWAYS" />
+            </HBox>
+
+            <TableView fx:id="tblPacientes" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colDpi" prefWidth="110.0" text="DPI/ID" />
+                    <TableColumn fx:id="colNombre" prefWidth="120.0" text="Nombre" />
+                    <TableColumn fx:id="colApellido" prefWidth="120.0" text="Apellido" />
+                    <TableColumn fx:id="colTelefono" prefWidth="100.0" text="Telefono" />
+                    <TableColumn fx:id="colEmail" prefWidth="160.0" text="Email" />
+                    <!-- colEstado (Activo/Inactivo) se llena con cellFactory en el controller -->
+                    <TableColumn fx:id="colEstado" prefWidth="80.0" text="Estado" />
+                </columns>
+            </TableView>
+
+            <!-- Botones sobre la fila seleccionada; habilitar/deshabilitar segun tienePermiso() -->
+            <HBox fx:id="rowActionsBar" alignment="CENTER_RIGHT" spacing="10.0">
+                <!-- Requiere permiso CREAR_PACIENTES -->
+                <Button fx:id="btnNuevoPaciente" mnemonicParsing="false" text="Nuevo Paciente" />
+                <!-- Requiere permiso EDITAR_PACIENTES -->
+                <Button fx:id="btnEditarPaciente" mnemonicParsing="false" text="Editar" />
+                <Button fx:id="btnHistorialClinico" mnemonicParsing="false" text="Historial Clinico" />
+                <!-- Requiere permiso DESACTIVAR_PACIENTES -->
+                <Button fx:id="btnDesactivarPaciente" mnemonicParsing="false" text="Desactivar" />
+            </HBox>
+
+            <Label fx:id="lblMensajeEstado" textFill="#a32d2d" />
+        </VBox>
+    </center>
+
+</BorderPane>
