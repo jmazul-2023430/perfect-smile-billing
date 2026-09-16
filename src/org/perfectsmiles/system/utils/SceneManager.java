@@ -5,21 +5,20 @@ import javafx.stage.Stage;
 
 public class SceneManager {
 
-    private static SceneManager instanciaSceneManager;
+    private static SceneManager instanceSceneManager;
     private Stage stagePrincipal;
 
     private SceneManager() {
 
     }
 
-    public static SceneManager getInstanciaSceneManager() {
-        if (instanciaSceneManager == null) {
-            instanciaSceneManager = new SceneManager();
+    public static SceneManager getInstanceSceneManager() {
+        if (instanceSceneManager == null) {
+            instanceSceneManager = new SceneManager();
         }
-        return instanciaSceneManager;
+        return instanceSceneManager;
     }
-
-
+    
     public void changeScene(Scene scene) {
         try {
             stagePrincipal.setScene(scene);

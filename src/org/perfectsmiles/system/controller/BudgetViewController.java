@@ -1,5 +1,5 @@
 package org.perfectsmiles.system.controller;
 
-public class RegisterController {
+public class BudgetViewController {
     
 }
