@@ -6,39 +6,22 @@ import java.sql.SQLException;
 
 public class ConexionDB {
 
-    private static ConexionDB instanciaConexionDB;
-    private Connection connectionDB;
+    private static final String URL = "jdbc:mysql://" + Enviroment.LOCATION_SERVICE
+            + "/" + Enviroment.DATA_BASE
+            + "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
 
-    private ConexionDB() {
+    private static final String USER = Enviroment.USER;
+    private static final String PASSWORD = Enviroment.PASSWORD;
+
+    static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connectionDB = DriverManager.getConnection(
-                    "jdbc:mysql://" + Enviroment.LOCATION_SERVICE + "/" + Enviroment.DATA_BASE,
-                    Enviroment.USER,
-                    Enviroment.PASSWORD);
-
-        } catch (ClassNotFoundException classNotFound) {
-            System.out.println("Error de clase no encontrada");
-        } catch (SQLException sqlException) {
-            System.out.println("Error de conexion sql ");
-        } catch (Exception e) {
-            System.out.println("Error padre " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Driver MySQL no encontrado. Agrega el JAR al classpath.", e);
         }
     }
 
-    public static ConexionDB getInstanciaConexionDB() {
-        if (instanciaConexionDB == null) {
-            instanciaConexionDB = new ConexionDB();
-        }
-        return instanciaConexionDB;
-    }
-
-    public Connection getConnectionDB() {
-        return connectionDB;
-    }
-
-    public void setConnectionDB(Connection connectionDB) {
-        this.connectionDB = connectionDB;
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
-

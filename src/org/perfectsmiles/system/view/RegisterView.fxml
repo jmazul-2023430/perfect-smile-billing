@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
@@ -40,17 +39,17 @@
       anterior para que el RegisterController no necesite cambios.
 -->
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="440.0" stylesheets="@../resources/styles/RegisterStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.perfectsmiles.system.controller.RegisterController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="745.0" prefWidth="440.0" stylesheets="@../resources/styles/RegisterStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.perfectsmiles.system.controller.RegisterController">
    <children>
 
       <!-- Fondo: mismo estilo/asset que la primera imagen, cubriendo todo el Pane -->
-      <ImageView fitHeight="800.0" fitWidth="440.0" pickOnBounds="true" preserveRatio="false">
+      <ImageView fitHeight="745.0" fitWidth="440.0" pickOnBounds="true" preserveRatio="false">
          <image>
             <Image url="@../resources/image/fondo2.jpg" />
          </image>
       </ImageView>
 
-      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="800.0" prefWidth="440.0" styleClass="transparent-scroll">
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="745.0" prefWidth="440.0" styleClass="transparent-scroll">
          <content>
             <VBox alignment="TOP_CENTER" prefWidth="440.0" spacing="0.0">
                <children>
@@ -79,8 +78,8 @@
                         <Insets bottom="30.0" top="14.0" />
                      </VBox.margin>
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title-text" text="CREA TU CUENTA" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="subtitle-text" text="Completa tus datos para registrarte">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title-text" text="CREAR UNA NUEVA CUENTA" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="subtitle-text" text="Completa los datos para el nuevo registro">
                            <VBox.margin>
                               <Insets bottom="8.0" />
                            </VBox.margin>
@@ -133,10 +132,6 @@
                            <VBox.margin>
                               <Insets top="8.0" />
                            </VBox.margin>
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="subtitle-text" text="Ya tienes cuenta?" />
-                              <Hyperlink fx:id="linkIrLogin" styleClass="link-secondary" text="Inicia Sesion" />
-                           </children>
                         </VBox>
                      </children>
                   </VBox>

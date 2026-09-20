@@ -1,4 +1,5 @@
 package org.perfectsmiles.system.model;
+
 import java.time.LocalDateTime;
 
 public class User {
@@ -14,20 +15,20 @@ public class User {
     private boolean active;
 
     public User() {
-
     }
 
-    public User(int idUser, int idRole, String userName, String passwordHash, String completeName, String email, String phone, LocalDateTime lastAccess, boolean active) {
+    public User(int idUser, int idRole, String userName, String passwordHash,
+            String completeName, String email, String phone,
+            LocalDateTime lastAccess, boolean active) {
         this.idUser = idUser;
         this.idRole = idRole;
         this.userName = userName;
         this.passwordHash = passwordHash;
         this.completeName = completeName;
-        this.email= email;
+        this.email = email;
         this.phone = phone;
         this.lastAccess = lastAccess;
         this.active = active;
-
     }
 
     public int getIdUser() {
@@ -102,4 +103,8 @@ public class User {
         this.active = active;
     }
 
+    @Override
+    public String toString() {
+        return "User{id=" + idUser + ", userName='" + userName + "', name='" + completeName + "'}";
+    }
 }
