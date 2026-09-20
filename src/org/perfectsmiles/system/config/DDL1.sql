@@ -70,6 +70,7 @@ create table budget_tb (
     id_budget int primary key auto_increment,
     id_patient int not null,
     id_user int not null,
+    description_budget varchar(255),
     issue_date date not null,
     subtotal decimal(10, 2),
     tax decimal(10, 2),
@@ -95,7 +96,7 @@ create table budget_detail_tb (
 -- =================================================================
 
 -- -----------------------------------------------------------------
--- Role Procedures
+-- ROLE PROCEDURES
 -- -----------------------------------------------------------------
 delimiter $$
 create procedure sp_create_role(in p_role_name varchar(50), in p_description varchar(100))
@@ -131,14 +132,13 @@ delimiter ;
 delimiter $$
 create procedure sp_delete_role(in p_id_role int)
 begin
-    update role_tb set
-        role_status = false
+    update role_tb set role_status = false
         where id_role = p_id_role;
 end $$
 delimiter ;
 
 -- -----------------------------------------------------------------
--- Permission Procedures
+-- PERMISSION PROCEDURES
 -- -----------------------------------------------------------------
 delimiter $$
 create procedure sp_create_permission(in p_permission_name varchar(50), in p_description varchar(50), in p_module varchar(50), in p_status boolean)
@@ -176,14 +176,13 @@ delimiter ;
 delimiter $$
 create procedure sp_delete_permission(in p_id_permission int)
 begin
-    update permission_tb set
-        permission_status = false
+    update permission_tb set permission_status = false
         where id_permission = p_id_permission;
 end $$
 delimiter ;
 
 -- -----------------------------------------------------------------
--- Role_Permission Procedures
+-- ROLE_PERMISSION PROCEDURES
 -- -----------------------------------------------------------------
 delimiter $$
 create procedure sp_create_role_permission(in p_id_role int, in p_id_permission int, in p_status boolean)
@@ -219,17 +218,27 @@ delimiter ;
 delimiter $$
 create procedure sp_delete_role_permission(in p_id_role_permission int)
 begin
-    update role_permission_tb set
-        assignment_status = false
+    update role_permission_tb set assignment_status = false
         where id_role_permission = p_id_role_permission;
 end $$
 delimiter ;
 
 -- -----------------------------------------------------------------
--- User Procedures
+-- USER PROCEDURES (CORREGIDOS)
+-- El hash se genera en Java (SHA-256 + Pepper + Base64)
 -- -----------------------------------------------------------------
+
 delimiter $$
-create procedure sp_create_user(in p_id_role int, in p_username varchar(50), in p_password_hash varchar(255), in p_full_name varchar(100), in p_email varchar(100), in p_phone varchar(15), in p_last_access datetime, in p_status boolean)
+create procedure sp_create_user(
+    in p_id_role int,
+    in p_username varchar(50),
+    in p_password_hash varchar(255),
+    in p_full_name varchar(100),
+    in p_email varchar(100),
+    in p_phone varchar(15),
+    in p_last_access datetime,
+    in p_status boolean
+)
 begin
     insert into user_tb(id_role, username, password_hash, full_name, email, phone, last_access, user_status)
         values(p_id_role, p_username, p_password_hash, p_full_name, p_email, p_phone, p_last_access, p_status);
@@ -253,32 +262,83 @@ end $$
 delimiter ;
 
 delimiter $$
-create procedure sp_edit_user(in p_id_role int, in p_username varchar(50), in p_password_hash varchar(255), in p_full_name varchar(100), in p_email varchar(100), in p_phone varchar(15), in p_last_access datetime, in p_status boolean, in p_id_user int)
+create procedure sp_edit_user(
+    in p_id_role int,
+    in p_username varchar(50),
+    in p_full_name varchar(100),
+    in p_email varchar(100),
+    in p_phone varchar(15),
+    in p_status boolean,
+    in p_id_user int
+)
 begin
     update user_tb set
         id_role = p_id_role,
         username = p_username,
-        password_hash = p_password_hash,
         full_name = p_full_name,
         email = p_email,
         phone = p_phone,
-        last_access = p_last_access,
         user_status = p_status
         where id_user = p_id_user;
 end $$
 delimiter ;
 
 delimiter $$
-create procedure sp_delete_user(in p_id_user int)
+create procedure sp_change_user_password(
+    in p_id_user int,
+    in p_new_password_hash varchar(255)
+)
 begin
     update user_tb set
-        user_status = false
+        password_hash = p_new_password_hash
+        where id_user = p_id_user;
+end $$
+delimiter ;
+
+-- 5. Login: valida usuario + hash
+delimiter $$
+create procedure sp_login_user(
+    in p_username varchar(50),
+    in p_password_hash varchar(255)
+)
+begin
+    select
+        id_user as ID_USER,
+        id_role as ID_ROLE,
+        username as Username,
+        full_name as `Full Name`,
+        email as Email,
+        phone as Phone,
+        last_access as `Last Access`,
+        user_status as Status
+    from user_tb
+    where username = p_username
+      and password_hash = p_password_hash
+      and user_status = true;
+end $$
+delimiter ;
+
+-- 6. Actualizar último acceso (tras login exitoso)
+delimiter $$
+create procedure sp_update_last_access(in p_id_user int)
+begin
+    update user_tb set
+        last_access = now()
+        where id_user = p_id_user;
+end $$
+delimiter ;
+
+-- 7. Desactivar usuario (soft delete)
+delimiter $$
+create procedure sp_delete_user(in p_id_user int)
+begin
+    update user_tb set user_status = false
         where id_user = p_id_user;
 end $$
 delimiter ;
 
 -- -----------------------------------------------------------------
--- Patient Procedures
+-- PATIENT PROCEDURES
 -- -----------------------------------------------------------------
 delimiter $$
 create procedure sp_create_patient(in p_first_name varchar(100), in p_last_name varchar(100), in p_dpi varchar(20), in p_phone varchar(15), in p_email varchar(100), in p_address varchar(100), in p_status boolean)
@@ -322,14 +382,13 @@ delimiter ;
 delimiter $$
 create procedure sp_delete_patient(in p_id_patient int)
 begin
-    update patient_tb set
-        patient_status = false
+    update patient_tb set patient_status = false
         where id_patient = p_id_patient;
 end $$
 delimiter ;
 
 -- -----------------------------------------------------------------
--- Treatment Procedures
+-- TREATMENT PROCEDURES
 -- -----------------------------------------------------------------
 delimiter $$
 create procedure sp_create_treatment(in p_id_user int, in p_internal_code varchar(20), in p_treatment_name varchar(120), in p_standard_cost decimal(10,2), in p_status boolean, in p_description text)
@@ -371,23 +430,34 @@ delimiter ;
 delimiter $$
 create procedure sp_delete_treatment(in p_id_treatment int)
 begin
-    update treatment_tb set
-        treatment_status = false
+    update treatment_tb set treatment_status = false
         where id_treatment = p_id_treatment;
 end $$
 delimiter ;
 
 -- -----------------------------------------------------------------
--- Budget Procedures
+-- BUDGET PROCEDURES (CORREGIDOS con description_budget)
 -- -----------------------------------------------------------------
+
+-- 1. Crear presupuesto (AHORA con descripción)
 delimiter $$
-create procedure sp_create_budget(in p_id_patient int, in p_id_user int, in p_issue_date date, in p_subtotal decimal(10,2), in p_tax decimal(10,2), in p_total decimal(10,2), in p_status boolean)
+create procedure sp_create_budget(
+    in p_id_patient int,
+    in p_id_user int,
+    in p_description_budget varchar(255),
+    in p_issue_date date,
+    in p_subtotal decimal(10,2),
+    in p_tax decimal(10,2),
+    in p_total decimal(10,2),
+    in p_status boolean
+)
 begin
-    insert into budget_tb(id_patient, id_user, issue_date, subtotal, tax, total, budget_status)
-        values(p_id_patient, p_id_user, p_issue_date, p_subtotal, p_tax, p_total, p_status);
+    insert into budget_tb(id_patient, id_user, description_budget, issue_date, subtotal, tax, total, budget_status)
+        values(p_id_patient, p_id_user, p_description_budget, p_issue_date, p_subtotal, p_tax, p_total, p_status);
 end $$
 delimiter ;
 
+-- 2. Leer presupuestos (AHORA devuelve la descripción)
 delimiter $$
 create procedure sp_read_budget()
 begin
@@ -395,6 +465,7 @@ begin
         id_budget as ID_BUDGET,
         id_patient as ID_PATIENT,
         id_user as ID_USER,
+        description_budget as Description,
         issue_date as `Issue Date`,
         subtotal as Subtotal,
         tax as Tax,
@@ -404,12 +475,24 @@ begin
 end $$
 delimiter ;
 
+-- 3. Editar presupuesto (AHORA actualiza la descripción)
 delimiter $$
-create procedure sp_edit_budget(in p_id_patient int, in p_id_user int, in p_issue_date date, in p_subtotal decimal(10,2), in p_tax decimal(10,2), in p_total decimal(10,2), in p_status boolean, in p_id_budget int)
+create procedure sp_edit_budget(
+    in p_id_patient int,
+    in p_id_user int,
+    in p_description_budget varchar(255),
+    in p_issue_date date,
+    in p_subtotal decimal(10,2),
+    in p_tax decimal(10,2),
+    in p_total decimal(10,2),
+    in p_status boolean,
+    in p_id_budget int
+)
 begin
     update budget_tb set
         id_patient = p_id_patient,
         id_user = p_id_user,
+        description_budget = p_description_budget,
         issue_date = p_issue_date,
         subtotal = p_subtotal,
         tax = p_tax,
@@ -419,17 +502,17 @@ begin
 end $$
 delimiter ;
 
+-- 4. Eliminar presupuesto (soft delete)
 delimiter $$
 create procedure sp_delete_budget(in p_id_budget int)
 begin
-    update budget_tb set
-        budget_status = false
+    update budget_tb set budget_status = false
         where id_budget = p_id_budget;
 end $$
 delimiter ;
 
 -- -----------------------------------------------------------------
--- Budget_Detail Procedures
+-- BUDGET_DETAIL PROCEDURES
 -- -----------------------------------------------------------------
 delimiter $$
 create procedure sp_create_budget_detail(in p_id_budget int, in p_id_treatment int, in p_unit_price decimal(10,2), in p_quantity int, in p_subtotal decimal(10,2))

@@ -15,8 +15,7 @@ public class Main extends Application {
     public void start(Stage stageRoot) {
         SceneManager.getInstanceSceneManager().setStagePrincipal(stageRoot);
         ViewFactory viewFacto = new ViewFactory();
-//        viewFacto.viewLogin();
-        viewFacto.viewRegister();
+        viewFacto.viewLogin();
     }
 
 }
