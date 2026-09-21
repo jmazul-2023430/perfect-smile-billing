@@ -64,6 +64,11 @@ public class ViewFactory {
                     SceneManager.getInstanceSceneManager().getStagePrincipal().setResizable(false);
                     scene = loadFileFXML("BudgetFormView.fxml");
                 }
+                case "patientHistory" -> {
+                    SceneManager.getInstanceSceneManager().getStagePrincipal().setTitle("HISTORIAL DE PRESUPUESTOS");
+                    SceneManager.getInstanceSceneManager().getStagePrincipal().setResizable(false);
+                    scene = loadFileFXML("PatientHistoryView.fxml");
+                }
                 default ->
                     System.out.println("Vista no reconocida: " + nameFXML);
             }
@@ -99,5 +104,9 @@ public class ViewFactory {
 
     public void viewBudgetForm() {
         loadScene("budgetForm");
+    }
+
+    public void viewPatientHistory() {
+        loadScene("patientHistory");
     }
 }

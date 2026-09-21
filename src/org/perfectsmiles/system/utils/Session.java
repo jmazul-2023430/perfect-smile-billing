@@ -1,6 +1,7 @@
 package org.perfectsmiles.system.utils;
 
 import org.perfectsmiles.system.model.Budget;
+import org.perfectsmiles.system.model.Patient;
 import org.perfectsmiles.system.model.Permission;
 import org.perfectsmiles.system.model.User;
 
@@ -12,6 +13,7 @@ public class Session {
     private static User currentUser;
     private static List<Permission> currentPermissions = new ArrayList<>();
     private static Budget budgetToEdit;
+    private static Patient patientForHistory;
 
     public static void setCurrentUser(User user) {
         currentUser = user;
@@ -61,9 +63,22 @@ public class Session {
         budgetToEdit = null;
     }
 
+    public static void setPatientForHistory(Patient patient) {
+        patientForHistory = patient;
+    }
+
+    public static Patient getPatientForHistory() {
+        return patientForHistory;
+    }
+
+    public static void clearPatientForHistory() {
+        patientForHistory = null;
+    }
+
     public static void clear() {
         currentUser = null;
         currentPermissions = new ArrayList<>();
         budgetToEdit = null;
+        patientForHistory = null;
     }
 }
