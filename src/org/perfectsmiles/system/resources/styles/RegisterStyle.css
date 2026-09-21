@@ -3,7 +3,6 @@
     -fx-background-color: transparent;
 }
 
-/* ===== ScrollPane transparente para que se vea el fondo detras del contenido ===== */
 .transparent-scroll,
 .transparent-scroll .viewport {
     -fx-background-color: transparent;
@@ -24,14 +23,12 @@
     -fx-border-color: transparent;
 }
 
-/* ===== Marca / encabezado ===== */
 .brand-text {
     -fx-fill: #eaf3fb;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
 }
 
-/* ===== Tarjeta de vidrio ===== */
 .glass-card {
     -fx-background-color: rgba(15, 32, 51, 0.55);
     -fx-background-radius: 20;
@@ -58,7 +55,6 @@
     -fx-font-weight: 600;
 }
 
-/* ===== Campos de texto / password / combo ===== */
 .text-input {
     -fx-background-color: rgba(255, 255, 255, 0.94);
     -fx-background-radius: 8;
@@ -77,7 +73,6 @@
     -fx-border-width: 1.6;
 }
 
-/* ComboBox usa .text-input tambien; esto afina el list-cell interno */
 .combo-box.text-input .list-cell {
     -fx-text-fill: #16232f;
     -fx-background-color: transparent;
@@ -86,7 +81,6 @@
     -fx-background-color: transparent;
 }
 
-/* ===== Boton principal ===== */
 .primary-button {
     -fx-background-color: linear-gradient(to right, #1c7fbf, #35b3d8);
     -fx-text-fill: #ffffff;
@@ -103,18 +97,26 @@
     -fx-background-color: linear-gradient(to right, #125e84, #268fac);
 }
 
-/* ===== Enlace secundario ===== */
-.link-secondary {
-    -fx-text-fill: #57c6ef;
-    -fx-font-size: 11px;
-    -fx-border-color: transparent;
+.secondary-button {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-text-fill: #eaf3fb;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 22;
+    -fx-border-color: rgba(255, 255, 255, 0.4);
+    -fx-border-width: 1;
+    -fx-border-radius: 22;
+    -fx-padding: 9 32 9 32;
+    -fx-cursor: hand;
 }
-.link-secondary:hover {
-    -fx-text-fill: #8adcf5;
-    -fx-underline: true;
+.secondary-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.25);
+    -fx-border-color: rgba(255, 255, 255, 0.6);
+}
+.secondary-button:pressed {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* ===== Mensaje de error ===== */
 .error-label {
     -fx-text-fill: #ff7a7a;
     -fx-font-size: 11px;
