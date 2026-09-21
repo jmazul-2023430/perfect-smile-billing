@@ -11,15 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<!--
-    LoginView - Sonrisas Perfectas
-    Controlador: com.sonrisasperfectas.controller.LoginController
-    Tamaño FIJO: 584x350 (min=max=pref). Para que la ventana real respete
-    esto, en el codigo del Stage debes llamar stage.setResizable(false)
-    y stage.sizeToScene() al mostrarla (Scene Builder por si solo no
-    fuerza el tamaño de la ventana, solo el del contenido).
--->
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="584.0" stylesheets="@../resources/styles/LoginStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.perfectsmiles.system.controller.LoginController">
    <children>
       <ImageView fitHeight="350.0" fitWidth="635.0" layoutX="-46.0" pickOnBounds="true" preserveRatio="true">
@@ -37,7 +28,6 @@
          </children>
       </VBox>
 
-      <!-- Tarjeta de vidrio -->
       <VBox layoutX="323.0" layoutY="14.0" prefHeight="323.0" prefWidth="247.0" spacing="4.0" styleClass="glass-card">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title-text" text="BIENVENIDO">
@@ -51,7 +41,6 @@
                </VBox.margin>
             </Text>
 
-            <!-- Mapea a usuario.username -->
             <Label styleClass="field-label" text="Usuario:">
                <VBox.margin>
                   <Insets top="10.0" />
@@ -63,7 +52,6 @@
                </VBox.margin>
             </TextField>
 
-            <!-- Mapea a usuario.password_hash (se hashea antes de comparar) -->
             <Label styleClass="field-label" text="Contraseña:">
                <VBox.margin>
                   <Insets top="10.0" />
@@ -75,13 +63,12 @@
                </VBox.margin>
             </PasswordField>
 
-            <!-- Mensaje de error / validacion (credenciales invalidas, usuario.status = false, etc.) -->
             <Label fx:id="lblMensajeError" styleClass="error-label" text="" wrapText="true">
                <VBox.margin>
                   <Insets top="6.0" />
                </VBox.margin>
             </Label>
-            <Button fx:id="btnIniciarSesion" mnemonicParsing="false" styleClass="primary-button" text="Iniciar Sesion">
+            <Button fx:id="btnIniciarSesion" mnemonicParsing="false" onAction="#handleLogin" styleClass="primary-button" text="Iniciar Sesion">
                <VBox.margin>
                   <Insets left="50.0" top="10.0" />
                </VBox.margin>
