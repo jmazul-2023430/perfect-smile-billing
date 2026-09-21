@@ -1,15 +1,19 @@
 package org.perfectsmiles.system.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import org.perfectsmiles.system.model.Patient;
 import org.perfectsmiles.system.model.User;
+import org.perfectsmiles.system.service.PatientService;
 import org.perfectsmiles.system.utils.AlertInformation;
 import org.perfectsmiles.system.utils.Session;
 import org.perfectsmiles.system.utils.ViewFactory;
+
+import java.util.List;
 
 public class PatientViewController {
 
@@ -30,19 +34,19 @@ public class PatientViewController {
     @FXML
     private TextField txtBuscarPaciente;
     @FXML
-    private TableView<?> tblPacientes;
+    private TableView<Patient> tblPacientes;
     @FXML
-    private TableColumn<?, ?> colDpi;
+    private TableColumn<Patient, String> colDpi;
     @FXML
-    private TableColumn<?, ?> colNombre;
+    private TableColumn<Patient, String> colNombre;
     @FXML
-    private TableColumn<?, ?> colApellido;
+    private TableColumn<Patient, String> colApellido;
     @FXML
-    private TableColumn<?, ?> colTelefono;
+    private TableColumn<Patient, String> colTelefono;
     @FXML
-    private TableColumn<?, ?> colEmail;
+    private TableColumn<Patient, String> colEmail;
     @FXML
-    private TableColumn<?, ?> colEstado;
+    private TableColumn<Patient, Boolean> colEstado;
     @FXML
     private Button btnNuevoPaciente;
     @FXML
@@ -55,11 +59,18 @@ public class PatientViewController {
     private Label lblMensajeEstado;
 
     private final ViewFactory viewFactory = new ViewFactory();
+    private final PatientService patientService = new PatientService();
+
+    private ObservableList<Patient> masterData = FXCollections.observableArrayList();
+    private FilteredList<Patient> filteredData;
 
     @FXML
     private void initialize() {
         showUserInfo();
         applyPermissions();
+        setupTableColumns();
+        loadPatients();
+        setupSearch();
     }
 
     private void showUserInfo() {
@@ -87,6 +98,46 @@ public class PatientViewController {
         boolean isOwner = Session.hasRole(1);
         btnUsuarios.setVisible(isOwner);
         btnUsuarios.setManaged(isOwner);
+    }
+
+    private void setupTableColumns() {
+        colDpi.setCellValueFactory(new PropertyValueFactory<>("dpi"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        colApellido.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        colTelefono.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colEstado.setCellValueFactory(new PropertyValueFactory<>("patientStatus"));
+    }
+
+    private void loadPatients() {
+        try {
+            List<Patient> patients = patientService.getAllPatients();
+            masterData.setAll(patients);
+            filteredData = new FilteredList<>(masterData, p -> true);
+            tblPacientes.setItems(filteredData);
+        } catch (Exception e) {
+            AlertInformation.showError("Error al cargar pacientes: " + e.getMessage());
+        }
+    }
+
+    private void setupSearch() {
+        if (txtBuscarPaciente == null) {
+            return;
+        }
+        txtBuscarPaciente.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (filteredData == null) {
+                return;
+            }
+            filteredData.setPredicate(p -> {
+                if (newVal == null || newVal.isEmpty()) {
+                    return true;
+                }
+                String lower = newVal.toLowerCase();
+                return (p.getFirstName() != null && p.getFirstName().toLowerCase().contains(lower))
+                        || (p.getLastName() != null && p.getLastName().toLowerCase().contains(lower))
+                        || (p.getDpi() != null && p.getDpi().toLowerCase().contains(lower));
+            });
+        });
     }
 
     @FXML
@@ -117,21 +168,69 @@ public class PatientViewController {
 
     @FXML
     private void handleNewPatient() {
-        AlertInformation.showInfo("Funcionalidad pendiente: Nuevo Paciente");
+        PatientFormDialog dialog = new PatientFormDialog(null);
+        Patient result = dialog.showAndWait().orElse(null);
+        if (result != null) {
+            try {
+                patientService.createPatient(result);
+                AlertInformation.showInfo("Paciente creado exitosamente.");
+                loadPatients();
+            } catch (Exception e) {
+                AlertInformation.showError(e.getMessage());
+            }
+        }
     }
 
     @FXML
     private void handleEditPatient() {
-        AlertInformation.showInfo("Funcionalidad pendiente: Editar Paciente");
+        Patient selected = tblPacientes.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            AlertInformation.showWarning("Seleccione un paciente para editar.");
+            return;
+        }
+        PatientFormDialog dialog = new PatientFormDialog(selected);
+        Patient result = dialog.showAndWait().orElse(null);
+        if (result != null) {
+            try {
+                patientService.updatePatient(result);
+                AlertInformation.showInfo("Paciente actualizado.");
+                loadPatients();
+            } catch (Exception e) {
+                AlertInformation.showError(e.getMessage());
+            }
+        }
     }
 
     @FXML
     private void handleClinicalHistory() {
-        AlertInformation.showInfo("Funcionalidad pendiente: Historial Clinico");
+        Patient selected = tblPacientes.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            AlertInformation.showWarning("Seleccione un paciente para ver su historial.");
+            return;
+        }
+        Session.setPatientForHistory(selected);
+        viewFactory.loadScene("patientHistory");
     }
 
     @FXML
     private void handleDeactivatePatient() {
-        AlertInformation.showInfo("Funcionalidad pendiente: Desactivar Paciente");
+        Patient selected = tblPacientes.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            AlertInformation.showWarning("Seleccione un paciente para desactivar.");
+            return;
+        }
+        boolean confirm = AlertInformation.showConfirmation(
+                "¿Desactivar al paciente '" + selected.getFullName() + "'?"
+        );
+        if (!confirm) {
+            return;
+        }
+        try {
+            patientService.deactivatePatient(selected.getIdPatient());
+            AlertInformation.showInfo("Paciente desactivado.");
+            loadPatients();
+        } catch (Exception e) {
+            AlertInformation.showError(e.getMessage());
+        }
     }
 }
