@@ -39,13 +39,14 @@ public class Session {
                 .anyMatch(p -> permissionName.equalsIgnoreCase(p.getPermissionName()));
     }
 
+    public static boolean hasRole(int idRole) {
+        return currentUser != null && currentUser.getIdRole() == idRole;
+    }
+
     public static boolean isLoggedIn() {
         return currentUser != null;
     }
 
-    /**
-     * Cierra sesión
-     */
     public static void clear() {
         currentUser = null;
         currentPermissions = new ArrayList<>();
