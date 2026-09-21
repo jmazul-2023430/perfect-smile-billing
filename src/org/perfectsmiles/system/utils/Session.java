@@ -1,5 +1,6 @@
 package org.perfectsmiles.system.utils;
 
+import org.perfectsmiles.system.model.Budget;
 import org.perfectsmiles.system.model.Permission;
 import org.perfectsmiles.system.model.User;
 
@@ -10,6 +11,7 @@ public class Session {
 
     private static User currentUser;
     private static List<Permission> currentPermissions = new ArrayList<>();
+    private static Budget budgetToEdit;
 
     public static void setCurrentUser(User user) {
         currentUser = user;
@@ -47,8 +49,21 @@ public class Session {
         return currentUser != null;
     }
 
+    public static void setBudgetToEdit(Budget budget) {
+        budgetToEdit = budget;
+    }
+
+    public static Budget getBudgetToEdit() {
+        return budgetToEdit;
+    }
+
+    public static void clearBudgetToEdit() {
+        budgetToEdit = null;
+    }
+
     public static void clear() {
         currentUser = null;
         currentPermissions = new ArrayList<>();
+        budgetToEdit = null;
     }
 }
