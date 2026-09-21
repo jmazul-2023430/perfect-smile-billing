@@ -17,9 +17,12 @@ import java.util.List;
 
 public class LoginController {
 
-    @FXML private TextField txtUsuario;
-    @FXML private PasswordField pwdPassword;
-    @FXML private Label lblMensajeError;
+    @FXML
+    private TextField txtUsuario;
+    @FXML
+    private PasswordField pwdPassword;
+    @FXML
+    private Label lblMensajeError;
 
     private final AuthService authService = new AuthService();
     private final AuthorizationService authorizationService = new AuthorizationService();
@@ -45,11 +48,11 @@ public class LoginController {
         }
 
         if (Validations.isNullOrEmpty(username)) {
-            mostrarError("El usuario es obligatorio.");
+            showError("El usuario es obligatorio.");
             return;
         }
         if (Validations.isNullOrEmpty(password)) {
-            mostrarError("La contrasena es obligatoria.");
+            showError("La contrasena es obligatoria.");
             return;
         }
 
@@ -57,7 +60,7 @@ public class LoginController {
             User user = authService.login(username, password);
 
             if (user == null) {
-                mostrarError("Usuario o contrasena incorrectos.");
+                showError("Usuario o contrasena incorrectos.");
                 return;
             }
 
@@ -66,25 +69,21 @@ public class LoginController {
 
             AlertInformation.showInfo("Bienvenido, " + user.getCompleteName());
 
-            redirigirSegunRol(user.getIdRole());
+            redirectByRole(user.getIdRole());
 
         } catch (IllegalArgumentException e) {
-            mostrarError(e.getMessage());
+            showError(e.getMessage());
         } catch (Exception e) {
-            mostrarError("Error inesperado: " + e.getMessage());
+            showError("Error inesperado: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private void redirigirSegunRol(int idRole) {
-        if (idRole == 1) {
-            viewFactory.loadScene("users");
-        } else {
-            viewFactory.loadScene("tariff");
-        }
+    private void redirectByRole(int idRole) {
+        viewFactory.loadScene("tariff");
     }
 
-    private void mostrarError(String mensaje) {
+    private void showError(String mensaje) {
         if (lblMensajeError != null) {
             lblMensajeError.setText(mensaje);
         }
