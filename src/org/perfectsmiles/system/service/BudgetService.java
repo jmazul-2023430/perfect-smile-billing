@@ -75,6 +75,56 @@ public class BudgetService {
         return true;
     }
 
+    public boolean updateBudgetWithDetails(Budget budget, List<BudgetDetail> details) throws Exception {
+        if (budget.getIdPatient() <= 0) {
+            throw new IllegalArgumentException("Debe seleccionar un paciente.");
+        }
+        if (details == null || details.isEmpty()) {
+            throw new IllegalArgumentException("Debe agregar al menos un tratamiento.");
+        }
+
+        BigDecimal subtotalGeneral = BigDecimal.ZERO;
+        for (BudgetDetail d : details) {
+            if (d.getUnitPrice() == null || d.getUnitPrice().compareTo(BigDecimal.ZERO) < 0) {
+                throw new IllegalArgumentException("El precio unitario no puede ser negativo.");
+            }
+            if (d.getItemQuantity() <= 0) {
+                throw new IllegalArgumentException("La cantidad debe ser mayor a cero.");
+            }
+            BigDecimal lineSubtotal = d.getUnitPrice()
+                    .multiply(BigDecimal.valueOf(d.getItemQuantity()))
+                    .setScale(2, RoundingMode.HALF_UP);
+            d.setSubtotal(lineSubtotal);
+            subtotalGeneral = subtotalGeneral.add(lineSubtotal);
+        }
+
+        BigDecimal tax = subtotalGeneral.multiply(Enviroment.TAX_RATE)
+                .setScale(2, RoundingMode.HALF_UP);
+        BigDecimal total = subtotalGeneral.add(tax).setScale(2, RoundingMode.HALF_UP);
+
+        budget.setSubtotal(subtotalGeneral);
+        budget.setTax(tax);
+        budget.setTotal(total);
+
+        if (!budgetDAO.update(budget)) {
+            throw new RuntimeException("No se pudo actualizar el presupuesto.");
+        }
+
+        List<BudgetDetail> oldDetails = detailDAO.readByBudget(budget.getIdBudget());
+        for (BudgetDetail old : oldDetails) {
+            detailDAO.delete(old.getIdBudgetDetail());
+        }
+
+        for (BudgetDetail d : details) {
+            d.setIdBudgetDetail(0);
+            d.setIdBudget(budget.getIdBudget());
+            if (!detailDAO.create(d)) {
+                throw new RuntimeException("Error al insertar un detalle.");
+            }
+        }
+        return true;
+    }
+
     private int findLastInsertedBudgetId(Budget budget) throws Exception {
         List<Budget> all = budgetDAO.readAll();
         int maxId = -1;

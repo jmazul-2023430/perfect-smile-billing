@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="rootPane" prefHeight="650.0" prefWidth="800.0" stylesheets="@../resources/styles/BudgetFormStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.perfectsmiles.system.controller.BudgetFormController">
+
+    <top>
+        <VBox fx:id="headerBox" spacing="4.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="12.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <Label text="NUEVO PRESUPUESTO">
+                <font>
+                    <Font name="System Bold" size="20.0" />
+                </font>
+            </Label>
+            <Label text="Complete los datos para armar la cotizacion del paciente." />
+        </VBox>
+    </top>
+
+    <center>
+        <VBox fx:id="contentArea" spacing="14.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+            </padding>
+
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <Label text="Paciente:" />
+                <ComboBox fx:id="cmbPaciente" prefWidth="300.0" promptText="Seleccione un paciente" HBox.hgrow="ALWAYS" />
+            </HBox>
+
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <Label text="Descripcion:" />
+                <TextField fx:id="txtDescripcion" prefWidth="400.0" promptText="Descripcion del presupuesto" HBox.hgrow="ALWAYS" />
+            </HBox>
+
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <Label text="Tratamiento:" />
+                <ComboBox fx:id="cmbTratamiento" prefWidth="300.0" promptText="Seleccione un tratamiento" HBox.hgrow="ALWAYS" />
+                <TextField fx:id="txtCantidad" prefWidth="80.0" promptText="Cant." />
+                <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#handleAddTreatment" text="+ Agregar" />
+            </HBox>
+
+            <TableView fx:id="tblDetalles" VBox.vgrow="ALWAYS" prefHeight="250.0">
+                <columns>
+                    <TableColumn fx:id="colTratamiento" prefWidth="250.0" text="Tratamiento" />
+                    <TableColumn fx:id="colCantidad" prefWidth="80.0" text="Cantidad" />
+                    <TableColumn fx:id="colPrecioUnitario" prefWidth="110.0" text="Precio Unitario" />
+                    <TableColumn fx:id="colSubtotalLinea" prefWidth="110.0" text="Subtotal" />
+                    <TableColumn fx:id="colQuitar" prefWidth="90.0" text="Accion" />
+                </columns>
+            </TableView>
+
+            <VBox alignment="TOP_RIGHT" spacing="6.0">
+                <padding>
+                    <Insets right="10.0" top="10.0" />
+                </padding>
+                <Label fx:id="lblSubtotal" text="Subtotal: Q 0.00">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblIva" text="IVA (12%): Q 0.00">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblTotal" text="Total: Q 0.00">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Label>
+            </VBox>
+
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#handleCancel" text="Cancelar" />
+                <Button fx:id="btnEmitir" mnemonicParsing="false" onAction="#handleEmit" styleClass="primary-button" text="Emitir Presupuesto" />
+            </HBox>
+
+            <Label fx:id="lblMensajeEstado" textFill="#a32d2d" />
+        </VBox>
+    </center>
+
+</BorderPane>

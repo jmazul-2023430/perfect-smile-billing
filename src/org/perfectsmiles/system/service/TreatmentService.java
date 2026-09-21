@@ -62,6 +62,14 @@ public class TreatmentService {
         return treatmentDAO.readById(id);
     }
 
+    public Treatment getTreatmentByIdSafe(int id) {
+        try {
+            return treatmentDAO.readById(id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public List<Treatment> searchTreatments(String query) throws Exception {
         if (Validations.isNullOrEmpty(query)) {
             return treatmentDAO.readActiveTreatments();

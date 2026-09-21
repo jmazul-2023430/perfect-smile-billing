@@ -1,0 +1,44 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-background-color: #f5f7fa;
+}
+
+#headerBox {
+    -fx-background-color: #1c4a6b;
+}
+
+#headerBox Label {
+    -fx-text-fill: #ffffff;
+}
+
+#headerBox Label:first-child {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+#contentArea {
+    -fx-background-color: #ffffff;
+}
+
+.primary-button {
+    -fx-background-color: linear-gradient(to right, #1c7fbf, #35b3d8);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 9 24 9 24;
+    -fx-cursor: hand;
+}
+.primary-button:hover {
+    -fx-background-color: linear-gradient(to right, #17709c, #2ea1c2);
+}
+
+Button {
+    -fx-background-color: #e0e6ed;
+    -fx-background-radius: 6;
+    -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
+}
+Button:hover {
+    -fx-background-color: #c8d3dd;
+}

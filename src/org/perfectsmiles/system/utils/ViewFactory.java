@@ -19,9 +19,7 @@ public class ViewFactory {
             URL urlFile = Main.class.getResource(pathOfFile);
             loaderFXML.setBuilderFactory(new JavaFXBuilderFactory());
             loaderFXML.setLocation(urlFile);
-
             return new Scene(loaderFXML.load());
-
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -61,10 +59,15 @@ public class ViewFactory {
                     SceneManager.getInstanceSceneManager().getStagePrincipal().setResizable(false);
                     scene = loadFileFXML("BudgetsView.fxml");
                 }
-                default -> System.out.println("Vista no reconocida: " + nameFXML);
+                case "budgetForm" -> {
+                    SceneManager.getInstanceSceneManager().getStagePrincipal().setTitle("NUEVO PRESUPUESTO");
+                    SceneManager.getInstanceSceneManager().getStagePrincipal().setResizable(false);
+                    scene = loadFileFXML("BudgetFormView.fxml");
+                }
+                default ->
+                    System.out.println("Vista no reconocida: " + nameFXML);
             }
             SceneManager.getInstanceSceneManager().changeScene(scene);
-
         } catch (NullPointerException objectNull) {
             System.out.println("Error load scene: " + objectNull.getMessage());
         }
@@ -92,5 +95,9 @@ public class ViewFactory {
 
     public void viewBudgets() {
         loadScene("budgets");
+    }
+
+    public void viewBudgetForm() {
+        loadScene("budgetForm");
     }
 }
