@@ -1,0 +1,223 @@
+.root {
+    -fx-clinic-navy: #0B3D63;
+    -fx-clinic-navy-dark: #082B47;
+    -fx-clinic-teal: #17A2B8;
+    -fx-clinic-teal-dark: #128293;
+    -fx-clinic-bg: #F5F7FA;
+    -fx-clinic-text: #1F2937;
+    -fx-clinic-text-muted: #6b7280;
+    -fx-clinic-border: #E1E5EA;
+    -fx-clinic-danger: #C0392B;
+    -fx-clinic-danger-dark: #a5311f;
+    -fx-clinic-success: #2ECC71;
+
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-background-color: -fx-clinic-bg;
+}
+
+/* ================= TOP BAR ================= */
+#topBar {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent -fx-clinic-border transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+#lblTituloApp {
+    -fx-text-fill: -fx-clinic-navy;
+}
+
+#lblUsuarioActual,
+#lblRolActual {
+    -fx-text-fill: -fx-clinic-text-muted;
+    -fx-font-size: 12px;
+}
+
+#avatarUsuario {
+    -fx-stroke: -fx-clinic-border;
+    -fx-stroke-width: 1px;
+}
+
+/* ================= SIDEBAR ================= */
+#sidebarMenu {
+    -fx-background-color: -fx-clinic-navy;
+}
+
+#sidebarMenu .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #D7E4EF;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 14 10 14;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+#sidebarMenu .button:hover {
+    -fx-background-color: -fx-clinic-navy-dark;
+    -fx-text-fill: white;
+}
+
+/* Pestaña activa: agregar styleClass "nav-btn-active" desde el controller */
+#sidebarMenu .button.nav-btn-active {
+    -fx-background-color: -fx-clinic-teal;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#btnCerrarSesion {
+    -fx-text-fill: #F3B4B0;
+}
+
+#btnCerrarSesion:hover {
+    -fx-background-color: -fx-clinic-danger;
+    -fx-text-fill: white;
+}
+
+/* ================= CONTENIDO ================= */
+#contentArea {
+    -fx-background-color: white;
+}
+
+#lblTituloModulo {
+    -fx-text-fill: -fx-clinic-navy;
+}
+
+#lblSubtituloModulo {
+    -fx-text-fill: -fx-clinic-text-muted;
+    -fx-font-size: 12px;
+}
+
+/* Barra de busqueda + boton de "Nuevo" */
+#toolBar .text-field {
+    -fx-background-color: -fx-clinic-bg;
+    -fx-background-radius: 6px;
+    -fx-border-color: -fx-clinic-border;
+    -fx-border-radius: 6px;
+    -fx-padding: 6 10 6 10;
+}
+
+#toolBar .text-field:focused {
+    -fx-border-color: -fx-clinic-teal;
+    -fx-background-color: white;
+}
+
+#toolBar .button,
+#btnNuevoTratamiento {
+    -fx-background-color: -fx-clinic-teal;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 7 16 7 16;
+    -fx-cursor: hand;
+}
+
+#toolBar .button:hover {
+    -fx-background-color: -fx-clinic-teal-dark;
+}
+
+/* ================= TABLA ================= */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-clinic-border;
+    -fx-border-radius: 6px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -fx-clinic-navy;
+    -fx-background-radius: 6px 6px 0 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent -fx-clinic-border transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #FAFBFC;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: derive(-fx-clinic-teal, 70%);
+}
+
+.table-view .placeholder .label {
+    -fx-text-fill: -fx-clinic-text-muted;
+}
+
+/* ================= BOTONES DE ACCION SOBRE LA FILA ================= */
+#rowActionsBar .button {
+    -fx-background-radius: 6px;
+    -fx-padding: 6 16 6 16;
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+}
+
+/* Editar / acciones neutrales */
+#btnEditarTratamiento,
+#btnEditarPaciente,
+#btnEditarPresupuesto,
+#btnEditarUsuario,
+#btnHistorialClinico,
+#btnCambiarRol {
+    -fx-background-color: white;
+    -fx-text-fill: -fx-clinic-navy;
+    -fx-border-color: -fx-clinic-navy;
+    -fx-border-radius: 6px;
+}
+
+#btnEditarTratamiento:hover,
+#btnEditarPaciente:hover,
+#btnEditarPresupuesto:hover,
+#btnEditarUsuario:hover,
+#btnHistorialClinico:hover,
+#btnCambiarRol:hover {
+    -fx-background-color: -fx-clinic-navy;
+    -fx-text-fill: white;
+}
+
+/* Nuevo / Aprobar: accion positiva */
+#btnNuevoPaciente,
+#btnNuevoPresupuesto,
+#btnNuevoUsuario,
+#btnAprobarPresupuesto {
+    -fx-background-color: -fx-clinic-success;
+    -fx-text-fill: white;
+}
+
+#btnNuevoPaciente:hover,
+#btnNuevoPresupuesto:hover,
+#btnNuevoUsuario:hover,
+#btnAprobarPresupuesto:hover {
+    -fx-background-color: derive(-fx-clinic-success, -15%);
+}
+
+/* Desactivar: accion destructiva/suave (no es DELETE fisico, ver logica del proyecto) */
+#btnDesactivarTratamiento,
+#btnDesactivarPaciente,
+#btnDesactivarPresupuesto,
+#btnDesactivarUsuario {
+    -fx-background-color: white;
+    -fx-text-fill: -fx-clinic-danger;
+    -fx-border-color: -fx-clinic-danger;
+    -fx-border-radius: 6px;
+}
+
+#btnDesactivarTratamiento:hover,
+#btnDesactivarPaciente:hover,
+#btnDesactivarPresupuesto:hover,
+#btnDesactivarUsuario:hover {
+    -fx-background-color: -fx-clinic-danger;
+    -fx-text-fill: white;
+}
+
+/* ================= MENSAJES DE ESTADO ================= */
+#lblMensajeEstado {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}

@@ -1,0 +1,32 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-background-color: #f5f7fa;
+}
+
+#topBar {
+    -fx-background-color: #1c4a6b;
+}
+
+#topBar Label {
+    -fx-text-fill: #ffffff;
+}
+
+#sidebarMenu {
+    -fx-background-color: #0f3a5c;
+}
+
+#sidebarMenu Button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #d7e3ee;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15 10 15;
+    -fx-cursor: hand;
+}
+
+#sidebarMenu Button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+#contentArea {
+    -fx-background-color: #ffffff;
+}
